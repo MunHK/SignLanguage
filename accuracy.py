@@ -7,7 +7,7 @@ import keyboard
 import time
 import pyttsx3
 import speech_recognition as sr
-import time
+
 
 max_num_hands = 1
 
@@ -44,8 +44,8 @@ hands = mp_hands.Hands(
 
 f = open('test1.txt', 'w')
 
-file_en = np.genfromtxt('C:/Users/hyeon/dataSet.txt', delimiter=',')
-file_kr = np.genfromtxt('C:/Users/hyeon/dataSet1.txt', delimiter=',')
+file_en = np.genfromtxt('dataSet.txt', delimiter=',')
+file_kr = np.genfromtxt('dataSet1.txt', delimiter=',')
 
 angleFile_en = file_en[:, :-1]
 labelFile_en = file_en[:, -1]
@@ -72,10 +72,10 @@ recognizeDelay = 1.5
 is_english = True  # 초기 설정: 영어 모드
 
 # 한글 폰트 경로 설정
-font_path = 'C:\\Windows\\Fonts\\NanumGothic.ttf'  # 한글 폰트 파일 경로 입력
+font_path = 'C:\\Users\\User\\Downloads\\NanumGothic.ttf'  # 한글 폰트 파일 경로 입력
 
 # 오버레이할 이미지 읽기
-overlay_img_path = 'C:\\Users\\hyeon\\OneDrive\\Desktop\\add.png'  # 오버레이할 이미지 파일 경로
+overlay_img_path = 'add.png'  # 오버레이할 이미지 파일 경로
 overlay_img = cv2.imread(overlay_img_path, cv2.IMREAD_UNCHANGED)
 
 # 오버레이 이미지 크기 조정
@@ -152,10 +152,17 @@ def overlay_image(bg_img, fg_img, x, y):
 
     return bg_img
 
+# 비디오 해상도를 원하는 크기로 설정 (예: 1280x720)
+#cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+#cap.set(cv2.CAP_PROP_FRAME_HEIGHT,1080)
+
 while True:
     ret, img = cap.read()
     if not ret:
         continue
+    
+    #img = cv2.resize(img, (800, 600))
+    
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     result = hands.process(imgRGB)
 
@@ -221,7 +228,7 @@ while True:
                                 sentence = ''  # 모드 변경 시 문장 초기화
                                 startTime = time.time()  # 변경 후 딜레이 초기화
                                 print("Mode changed:", "English" if is_english else "Korean")
-                            if index ==36:
+                            elif index ==36:
                                 merge_jamo = join_jamos(sentence)
                                 sentence = merge_jamo
                                 print(merge_jamo)
